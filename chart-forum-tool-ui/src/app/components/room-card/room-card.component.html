@@ -1,0 +1,5 @@
+<div class="d-flex flex-column container room-cards">
+    <div *ngFor="let singleRoom of roomsInfo" class="single-room-card" (click)="setRoomInfo(singleRoom)">
+        <p>{{singleRoom.roomName}}</p>
+    </div>
+</div>
