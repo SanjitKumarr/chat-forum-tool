@@ -30,7 +30,7 @@ export class RoomCardComponent implements OnInit {
     },
     {
       roomId: '',
-      roomName: 'Tes3'
+      roomName: 'Test3'
     }];
   }
 

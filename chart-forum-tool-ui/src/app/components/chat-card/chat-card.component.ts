@@ -8,6 +8,8 @@ import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 })
 export class ChatCardComponent implements OnInit {
   roomInfo: any;
+  messages: any = [];
+
   constructor(
     private roomInfoService: RoomInfoService
   ) { }
@@ -15,5 +17,8 @@ export class ChatCardComponent implements OnInit {
   ngOnInit(): void {
     this.roomInfo = this.roomInfoService.roomInfo;
   }
-
+  currentMessage(event : any){
+    this.messages.push(event.target.value);
+    event.target.value = '';
+  }
 }
