@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 
 @Component({
@@ -11,7 +12,8 @@ export class ChatCardComponent implements OnInit {
   messages: any = [];
 
   constructor(
-    private roomInfoService: RoomInfoService
+    private roomInfoService: RoomInfoService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -20,5 +22,8 @@ export class ChatCardComponent implements OnInit {
   currentMessage(event : any){
     this.messages.push(event.target.value);
     event.target.value = '';
+  }
+  backToRooms(){
+    this.router.navigate(['/room']);
   }
 }

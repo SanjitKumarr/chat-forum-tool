@@ -1,6 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
+import { ModalComponent } from '../modal/modal.component';
 
 @Component({
   selector: 'app-room-card',
@@ -9,15 +11,19 @@ import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 })
 
 export class RoomCardComponent implements OnInit {
+  @ViewChild('modal')
+  private modalComponent!: ModalComponent;
   roomsInfo:any = [];
+  roomCreationCode!: string;
   constructor(
     private roomInfoService: RoomInfoService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit(): void {
     this.roomsInfo = [{
-      roomId: '',
+      roomId: 'ae7ef6ac-a461-4033-a937-46bc19f5d097',
       roomName: 'Test'
     },
     {
@@ -39,4 +45,14 @@ export class RoomCardComponent implements OnInit {
     this.router.navigate(['/chat']);
   }
 
+  openModal(){
+    this.modalComponent.open().then(()=>{
+      console.log('closed');
+      this.roomsInfo.push({roomId: '', roomName: this.roomCreationCode});
+    });
+  }
+
+  addCard(code:string){
+    this.roomCreationCode = code;
+  }
 }

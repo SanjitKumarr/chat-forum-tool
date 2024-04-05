@@ -1,6 +1,9 @@
 :host{
     height: 100%;
 }
+.back-button {
+    cursor: pointer;
+}
 .chat-container{
     height: calc(100% - 40px);
     padding:20px;

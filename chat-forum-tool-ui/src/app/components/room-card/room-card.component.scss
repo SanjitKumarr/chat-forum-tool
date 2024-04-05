@@ -2,6 +2,7 @@
     height: 100%;
 }
 .room-cards{
+    overflow-y: scroll;
     height: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
@@ -16,6 +17,22 @@
         min-height: 100px;
         border-radius: 5px;
         background-color: rgba(255, 255, 255, .06);
+        margin-bottom: 15px;
         cursor: pointer;
     }
+    .add-card p{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 38px;
+        background-color: rgba(255, 255, 255, 0.06);
+        cursor: pointer;    }
+}
+.room-cards::-webkit-scrollbar {
+    display: none;
+}
+
+.room-cards {
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
 }

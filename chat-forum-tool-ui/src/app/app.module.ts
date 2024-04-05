@@ -8,14 +8,18 @@ import { environment } from '../environments/environment';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RoomCardComponent } from './components/room-card/room-card.component';
 import { ChatCardComponent } from './components/chat-card/chat-card.component';
+import { ModalComponent } from './components/modal/modal.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoomCardComponent,
     ChatCardComponent,
+    ModalComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

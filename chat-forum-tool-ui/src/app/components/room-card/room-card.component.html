@@ -2,4 +2,8 @@
     <div *ngFor="let singleRoom of roomsInfo" class="single-room-card" (click)="setRoomInfo(singleRoom)">
         <p>{{singleRoom.roomName}}</p>
     </div>
+    <app-modal #modal (codeEvent)="addCard($event)"></app-modal>
+    <div class="add-card" (click)="openModal()">
+        <p>+</p>
+    </div>
 </div>
