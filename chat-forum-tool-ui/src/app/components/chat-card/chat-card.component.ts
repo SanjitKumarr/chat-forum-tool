@@ -21,9 +21,12 @@ export class ChatCardComponent implements OnInit {
   ngOnInit(): void {
     this.roomInfo = this.roomInfoService.roomInfo;
     this.socketService.joinRoom(this.roomInfo._id);
+    this.socketService.getNewMessage().subscribe((message) => {
+      this.messages.push(message);
+    })
   }
   currentMessage(event : any){
-    this.messages.push(event.target.value);
+    this.socketService.sendMessage(event.target.value);
     event.target.value = '';
   }
   backToRooms(){
