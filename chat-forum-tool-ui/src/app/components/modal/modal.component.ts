@@ -9,7 +9,7 @@ import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 })
 export class ModalComponent implements OnInit {
   code: string = '';
-  roomName: string = '';
+  name: string = '';
   @Output() roomCreationCodeEvent = new EventEmitter();
 
   constructor(
@@ -23,7 +23,7 @@ export class ModalComponent implements OnInit {
 
   checkCode(){
     const newRoomData = {
-      roomName: this.roomName,
+      name: this.name,
       isCreationCode: this.code === 'SNJT'
     }
     this.activeModal.close(newRoomData);

@@ -3,7 +3,14 @@ import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 import { ModalComponent } from '../modal/modal.component';
+import { ApiService } from 'src/app/services/api-service/api.service';
 
+interface RoomInfo {
+  _id: string,
+  name: string,
+  description?: string,
+  createAt?: string
+}
 @Component({
   selector: 'app-room-card',
   templateUrl: './room-card.component.html',
@@ -13,32 +20,21 @@ import { ModalComponent } from '../modal/modal.component';
 export class RoomCardComponent implements OnInit {
   @ViewChild('modal')
   private modalComponent!: ModalComponent;
-  roomsInfo:any = [];
+  roomsInfo!:RoomInfo[];
   roomCreationCode!: string;
   modalRef!: NgbModalRef;
   constructor(
     private roomInfoService: RoomInfoService,
     private router: Router,
     private modalService: NgbModal,
+    private apiService: ApiService
   ) { }
 
   ngOnInit(): void {
-    this.roomsInfo = [{
-      roomId: 'ae7ef6ac-a461-4033-a937-46bc19f5d097',
-      roomName: 'Test'
-    },
-    {
-      roomId: '',
-      roomName: 'Test1'
-    },
-    {
-      roomId: '',
-      roomName: 'Test2'
-    },
-    {
-      roomId: '',
-      roomName: 'Test3'
-    }];
+    this.apiService.getRoomInfo().subscribe((data)=>{
+      console.log('RoomInfo: ', data);
+      this.roomsInfo = data;
+    })
   }
 
   setRoomInfo(singleRoomInfo:any){
@@ -50,19 +46,22 @@ export class RoomCardComponent implements OnInit {
     this.modalRef = this.modalService.open(ModalComponent);
     this.modalRef.result.then((newRoomData)=>{
       if(newRoomData.isCreationCode){
-        this.roomsInfo.push({
-          roomId: '',
-          roomName: newRoomData.roomName
+        const roomInfo = {
+          name: newRoomData.name
+        }
+        this.apiService.addRoom(roomInfo).subscribe((data)=>{
+          this.roomsInfo.push({
+            _id: data._id,
+            name: data.name
+          })
         })
       }
     })
   }
 
-  addCard(code:string){
-    this.roomCreationCode = code;
-  }
-
-  deleteRoom(idx:number){
-    this.roomsInfo.splice(idx, 1);
+  deleteRoom(idx:number, roomId: string){
+    this.apiService.deleteRoom(roomId).subscribe((data)=>{
+      this.roomsInfo.splice(idx, 1);
+    })
   }
 }

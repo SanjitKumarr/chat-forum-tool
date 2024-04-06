@@ -5,6 +5,7 @@ const roomRoute = require('./route/index.route');
 const port = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const path = require('path');
+const cors = require('cors');
 
 const io = require('socket.io')(server,{
   cors: ['http://localhost:4200']
@@ -13,6 +14,7 @@ const io = require('socket.io')(server,{
 mongoose.connect('mongodb://127.0.0.1:27017/forum-chat')
   .then(() => console.log('Connected!'));
 
+app.use(cors());
 app.use(bodyParser.json());
 app.get('/', function(req, res) {
   res.send('Hello World!');

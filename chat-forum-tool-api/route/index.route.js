@@ -1,6 +1,5 @@
 
 const express = require('express');
-const app = express();
 const roomRoute = express.Router();
 let Room = require('../model/room');
 
