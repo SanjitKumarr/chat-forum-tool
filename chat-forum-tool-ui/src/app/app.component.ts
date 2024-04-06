@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { io } from 'socket.io-client'
+import { SocketService } from './services/socket-service/socket.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,8 @@ import { io } from 'socket.io-client'
 export class AppComponent implements OnInit {
   title = 'chart-forum-tool-ui';
   
+  constructor(private socketService: SocketService){
+  }
   ngOnInit(): void {
-    const socket = io('http://localhost:3000/');
   }
 }

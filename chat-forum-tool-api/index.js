@@ -12,7 +12,7 @@ const io = require('socket.io')(server,{
 });
 
 mongoose.connect('mongodb://127.0.0.1:27017/forum-chat')
-  .then(() => console.log('Connected!'));
+  .then(() => console.log('Database Connected!'));
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -32,6 +32,16 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('a user disconnected!');
   });
+
+  socket.on('join', room => {
+    socket.join(room);
+    console.log('joined room', room);
+  });
+
+  socket.on('leave', room => {
+    socket.leave(room);
+    console.log('Room left: ', room);
+  })
 });
 server.listen(port, function() {
   console.log(`Listening on port ${port}`);
