@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 import { ModalComponent } from '../modal/modal.component';
 
@@ -15,6 +15,7 @@ export class RoomCardComponent implements OnInit {
   private modalComponent!: ModalComponent;
   roomsInfo:any = [];
   roomCreationCode!: string;
+  modalRef!: NgbModalRef;
   constructor(
     private roomInfoService: RoomInfoService,
     private router: Router,
@@ -46,13 +47,22 @@ export class RoomCardComponent implements OnInit {
   }
 
   openModal(){
-    this.modalComponent.open().then(()=>{
-      console.log('closed');
-      this.roomsInfo.push({roomId: '', roomName: this.roomCreationCode});
-    });
+    this.modalRef = this.modalService.open(ModalComponent);
+    this.modalRef.result.then((newRoomData)=>{
+      if(newRoomData.isCreationCode){
+        this.roomsInfo.push({
+          roomId: '',
+          roomName: newRoomData.roomName
+        })
+      }
+    })
   }
 
   addCard(code:string){
     this.roomCreationCode = code;
+  }
+
+  deleteRoom(idx:number){
+    this.roomsInfo.splice(idx, 1);
   }
 }

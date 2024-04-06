@@ -1,9 +1,12 @@
 <div class="d-flex flex-column container room-cards">
-    <div *ngFor="let singleRoom of roomsInfo" class="single-room-card" (click)="setRoomInfo(singleRoom)">
-        <p>{{singleRoom.roomName}}</p>
+    <div *ngFor="let singleRoom of roomsInfo;let i=index" class="single-room-card" >
+        <div class="room-name" (click)="setRoomInfo(singleRoom)">{{singleRoom.roomName}}</div>
+        <div class="delete-icon">
+            <i class="bi bi-trash-fill" (click)="deleteRoom(i)"></i>
+        </div>
     </div>
-    <app-modal #modal (codeEvent)="addCard($event)"></app-modal>
+    <!-- <app-modal #modal></app-modal> -->
     <div class="add-card" (click)="openModal()">
-        <p>+</p>
+        <p><i class="bi bi-house-add-fill"></i></p>
     </div>
 </div>

@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class RoomInfoService {
   _roomInfo:any;
+  _roomCreationCode: any;
 
   constructor() { }
 

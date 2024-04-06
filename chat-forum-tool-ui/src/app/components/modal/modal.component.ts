@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output, TemplateRef, ViewChild } from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 
 @Component({
   selector: 'app-modal',
@@ -7,24 +8,24 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./modal.component.scss']
 })
 export class ModalComponent implements OnInit {
-  @ViewChild('content') private modalContent!: TemplateRef<ModalComponent>;
-  @Output() codeEvent = new EventEmitter();
-  private modalRef!: NgbModalRef;
-  name: string = '';
+  code: string = '';
+  roomName: string = '';
+  @Output() roomCreationCodeEvent = new EventEmitter();
 
   constructor(
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private roominfoService: RoomInfoService,
+    public activeModal: NgbActiveModal
   ) { }
 
   ngOnInit(): void {
   }
 
-  open() {
-    return new Promise<boolean>(resolve => {
-      this.modalRef = this.modalService.open(this.modalContent);
-      this.modalRef.result.then(resolve,resolve);
-      console.log('test');
-      this.codeEvent.emit(this.name);
-    })
+  checkCode(){
+    const newRoomData = {
+      roomName: this.roomName,
+      isCreationCode: this.code === 'SNJT'
+    }
+    this.activeModal.close(newRoomData);
   }
 }
