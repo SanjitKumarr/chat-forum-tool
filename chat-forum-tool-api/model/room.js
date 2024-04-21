@@ -7,6 +7,9 @@ let Room =new Schema({
     name:{
         type:String,
     },
+    messages: {
+        type: [String],
+    },
     description:{
         type:String,
     },

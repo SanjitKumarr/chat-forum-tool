@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { ApiService } from 'src/app/services/api-service/api.service';
 import { RoomInfoService } from 'src/app/services/room-info/room-info.service';
 import { SocketService } from 'src/app/services/socket-service/socket.service';
 
@@ -13,23 +14,33 @@ export class ChatCardComponent implements OnInit, OnDestroy {
   roomInfo: any;
   messages: any = [];
   private newMessageSubscription!: Subscription;
+  private roomDataSubscription!: Subscription;
+  private updateMessageSubscription!: Subscription;
 
   constructor(
     private roomInfoService: RoomInfoService,
     private router: Router,
-    private socketService: SocketService
+    private socketService: SocketService,
+    private apiService: ApiService
   ) { }
 
   ngOnInit(): void {
     this.roomInfo = this.roomInfoService.roomInfo;
+    this.roomDataSubscription = this.apiService.getRoomInfoById(this.roomInfo._id).subscribe((roomInfo) =>{
+      this.messages = roomInfo.messages;
+    });
     this.socketService.joinRoom(this.roomInfo._id);
     this.newMessageSubscription = this.socketService.getNewMessage().subscribe((message) => {
       this.messages.push(message);
     })
   }
   currentMessage(event : any){
-    this.messages.push(event.target.value);
-    this.socketService.sendMessage(event.target.value, this.roomInfo._id);
+    const message = event.target.value;
+    this.messages.push(message);
+    const roomID = this.roomInfo._id;
+    this.updateMessageSubscription = this.apiService.setMessageForRoom(roomID, this.messages).subscribe((data)=>{
+      this.socketService.sendMessage(message, this.roomInfo._id);
+    },error => console.log(error))
     event.target.value = '';
   }
   backToRooms(){
@@ -40,5 +51,9 @@ export class ChatCardComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.socketService.socket.off('recieve-message');
     this.newMessageSubscription.unsubscribe();
+    this.roomDataSubscription.unsubscribe();
+    if(this.updateMessageSubscription){
+      this.updateMessageSubscription.unsubscribe();
+    }
   }
 }

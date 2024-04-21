@@ -41,8 +41,8 @@ roomRoute.route('/readRoom/:id').get((req, res, next) => {
 
 roomRoute.route('/updateRoom/:id').put((req, res, next) => {
     Room.findByIdAndUpdate(req.params.id, {
-        $set: req - body
-    }, (error, data) => {
+        $set: req.body
+    }).then( (data, error) => {
         if (error) {
             return next(error);
         } else {
