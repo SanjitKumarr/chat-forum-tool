@@ -25,7 +25,12 @@ export class ChatCardComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.roomInfo = this.roomInfoService.roomInfo;
+    if(this.roomInfoService.roomInfo){
+      this.roomInfo = this.roomInfoService.roomInfo;
+      localStorage.setItem('roomInfo', JSON.stringify(this.roomInfo));
+    }else {
+      this.roomInfo = JSON.parse(localStorage.getItem('roomInfo') as string);
+    }
     this.roomDataSubscription = this.apiService.getRoomInfoById(this.roomInfo._id).subscribe((roomInfo) =>{
       this.messages = roomInfo.messages;
     });
